@@ -4,11 +4,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
-    private lateinit var tabLayout: TabLayout
+    private val tabLayout by lazy {
+        findViewById<TabLayout>(R.id.tabLayout)
+    }
+
+    private val viewPager by lazy {
+        findViewById<ViewPager>(R.id.viewPager)
+    }
+
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,9 +33,10 @@ class MainActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         //fragment que será chamado por padrão
         callFragment(NaoSocioFragment())
 
-        tabLayout = findViewById(R.id.tabLayout)
+        //chamar o adapter
+        viewPager.adapter = RegisterAdapter(listOf("Não sócio", "Sócio"), listOf(NaoSocioFragment(), SocioFragment()),supportFragmentManager)
 
-        tabLayout.addOnTabSelectedListener(this)
+        tabLayout.setupWithViewPager(viewPager)
 
     }
 
